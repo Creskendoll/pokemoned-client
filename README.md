@@ -1,3 +1,7 @@
+# Pokemoned Client
+Web client for the Pokemoned project. Converts images into pokemon filled ones. 
+
+## How
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
