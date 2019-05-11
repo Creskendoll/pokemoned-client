@@ -1,6 +1,7 @@
 import * as $ from 'jquery';
 import { IConnectorOptions } from './Connector/IConnector';
 import { ConnectorOptions } from './Connector/BaseConnector';
+
 namespace Ajax {
   export class Service {
     public request = (
