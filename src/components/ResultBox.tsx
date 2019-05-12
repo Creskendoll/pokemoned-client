@@ -7,7 +7,7 @@ interface IResultBox {
 }
 
 const ResultBox: React.FC<IResultBox> = ({images}) => {
-    const BASE_URL = "https://kenansoylu.com/vm/pokiki?image="
+    const BASE_URL = "http://35.204.79.178:5000/pokiki?image="
 
     const handleImageClick = (url : string) => {
         const win = window.open(url, '_blank');

@@ -44,7 +44,7 @@ const ComponentContainer: React.FC = () => {
     }
 
     const handleConvert = () => {
-        const URL = "https://kenansoylu.com/pokemoned/post-image";
+        const URL = "http://35.204.79.178:5000/pokemoned/post-image";
         const service = new XMLHttpRequest();
         var formData = new FormData();
 
