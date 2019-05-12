@@ -1,11 +1,11 @@
 import { IConnector, IConnectorOptions } from './IConnector';
-import Ajax from '../Ajax';
+import Service from '../Service';
 
 export class BaseConnector implements IConnector {
   public options: IConnectorOptions;
   public _successCallback?: Function;
   public _errorCallback?: Function;
-  public service: Ajax.Service;
+  public service: Service;
 
   constructor(
     options: IConnectorOptions,
@@ -13,7 +13,7 @@ export class BaseConnector implements IConnector {
     fail?: Function
   ) {
     this.options = options;
-    this.service = new Ajax.Service();
+    this.service = new Service();
     this._successCallback = success;
     this._errorCallback = fail;
 

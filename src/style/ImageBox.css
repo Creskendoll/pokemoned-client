@@ -5,6 +5,10 @@
     width: 100%;
     border: #29B6F6 1px solid;
   }
+
+  .uploadImages {
+    width: 100%;
+  }
   
   .file-drop > .file-drop-target {
     /* basic styles */
