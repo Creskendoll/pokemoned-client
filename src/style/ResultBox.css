@@ -1,0 +1,7 @@
+.result-image {
+    transition: transform .2s; /* Animation */
+    cursor: pointer;
+}
+.result-image:hover  {
+    transform: scale(1.1);
+}

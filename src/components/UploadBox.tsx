@@ -1,19 +1,21 @@
 import React from 'react';
 import FileDrop from 'react-file-drop';
-import "../style/ImageBox.css";
-import { Col, Button } from "react-bootstrap";
+import "../style/UploadBox.css";
+import { Col, Container } from "react-bootstrap";
 import UploadImage from './UploadImage';
 import { MyFile } from "./ComponentContainer";
 
-interface IImageBox {
+interface IUploadBox {
     images: MyFile[],
     updateImages: (newImages: Array<MyFile>) => void
 }
 
-const ImageBox: React.FC<IImageBox> = ({ images, updateImages }) => {
+const UploadBox: React.FC<IUploadBox> = ({ images, updateImages }) => {
 
     const handleDrop = (files: FileList | null, event: React.DragEvent<HTMLDivElement>) => {
         if (files) {
+            var droppedImages = Array<MyFile>();
+
             [...Array(files.length).keys()].forEach((index: number) => {
                 const reader = new FileReader();
                 const file = files.item(index);
@@ -30,7 +32,10 @@ const ImageBox: React.FC<IImageBox> = ({ images, updateImages }) => {
                         src: reader.result ? reader.result : ""
                     };
 
-                    updateImages(Object.assign(images.slice(), { [images.length + index]: myFile }));
+                    droppedImages.push(myFile);
+
+                    if (index === files.length - 1)
+                        updateImages(droppedImages);
                 }
             });
         }
@@ -44,20 +49,24 @@ const ImageBox: React.FC<IImageBox> = ({ images, updateImages }) => {
         <Col lg={6} md={6} sm={12}>
             <div id="react-file-drop-demo" style={{
                 border: '1px solid white',
-                color: 'white', padding: 20,
+                color: 'white', padding: 10,
                 textAlign: "center",
                 height: "100%"
             }}>
-                <Button variant="primary" style={{
+                {/* <Button variant="primary" style={{
                     marginBottom: 15
                 }}>
                     Upload Files
                     <input type="file" />
-                </Button>
+                </Button> */}
 
                 <div style={{ height: "100%" }}>
                     <FileDrop onDrop={handleDrop} >
-                        <div className="uploadImages">
+                        <Container style={{
+                            width: "100%",
+                            height : "100%",
+                            overflowY: "auto"
+                        }}>
                             {images.map((img, index) => {
                                 const enc = new TextDecoder("utf-8");
 
@@ -66,8 +75,14 @@ const ImageBox: React.FC<IImageBox> = ({ images, updateImages }) => {
 
                                 return (<UploadImage key={index} onDelete={(e: any) => handleImageDelete(e, index)} imgSrc={imgSrcStr} fileName={img.name} />);
                             })}
-                        </div>
-                        Drop your images here!
+                        {images.length === 0 && 
+                            <div style={{height:"100%"}}>
+                                <span style={{top:"50%", position: "relative"}}>
+                                    Drop your images here!
+                                </span>
+                            </div>
+                        }
+                        </Container>
                     </FileDrop>
                 </div>
 
@@ -76,4 +91,4 @@ const ImageBox: React.FC<IImageBox> = ({ images, updateImages }) => {
     );
 }
 
-export default ImageBox;
+export default UploadBox;

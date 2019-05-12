@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import "../style/Container.css";
 import { Jumbotron, Row, Button, Col } from 'react-bootstrap';
 import ResultBox from "./ResultBox";
-import ImageBox from "./ImageBox";
+import UploadBox from "./UploadBox";
 import SettingsBox from "./SettingsBox";
 import {b64toBlob} from "../helpers/Helpers";
 
@@ -26,26 +26,43 @@ const ComponentContainer: React.FC = () => {
         divideY: 32,
         quality: 2
     };
-    const [settings, setSettings] = useState(initSettings);
+    // const debugResults = [
+    // "a.jpg",
+    // "canada.png",
+    // "courses.png",
+    // "git.png",
+    // "id.png",
+    // "Screenshot_from_2019-05-06_23-36-12.png",]
 
+    const [settings, setSettings] = useState(initSettings);
     const [images, setImages] = useState(Array<MyFile>());
+    const [resultImages, setResults] = useState(Array<string>());
+    // const [resultImages, setResults] = useState(debugResults);
 
     const updateUploadImages = (newImages: Array<MyFile>) => {
         setImages(newImages);
     }
 
     const handleConvert = () => {
-        const URL = "http://localhost:5000/pokemoned/post-image";
+        const URL = "https://kenansoylu.com/pokemoned/post-image";
         const service = new XMLHttpRequest();
         var formData = new FormData();
 
-        service.open("post", URL, true);
         images.forEach(image => {
             const decoded = (image.src as string).split(",")[1];
-
+            
             formData.append("image", b64toBlob(decoded, image.type), image.name);
         });
-
+        
+        service.addEventListener("load", function() {
+            const responseObj = JSON.parse(this.responseText);
+            setResults(responseObj["images"] || []);
+        });
+        service.addEventListener("error", function() {
+            alert("Error Sending Files!");
+            console.log(this.responseText);
+        });
+        service.open("post", URL, true);
         service.send(formData);
     }
 
@@ -56,16 +73,19 @@ const ComponentContainer: React.FC = () => {
     return (
         <Jumbotron className="component-container">
             <Row>
-                <ImageBox updateImages={updateUploadImages} images={images} />
+                <UploadBox updateImages={updateUploadImages} images={images} />
                 <SettingsBox settings={settings} handleChange={handleChangeSettings} />
             </Row>
             <Row>
                 <Col lg={12} md={12}>
                     <Button variant="success" onClick={handleConvert} style={{
                         flex: 1,
-                        width: "100%",
-                        height: 50,
-                        marginTop: 15
+                        width: "50%",
+                        marginRight: "auto",
+                        marginLeft: "auto",
+                        height: 60,
+                        marginTop: 15,
+                        display: "block"
 
                     }}>
                         Convert!
@@ -73,7 +93,7 @@ const ComponentContainer: React.FC = () => {
                 </Col>
             </Row>
             <Row>
-                <ResultBox />
+                <ResultBox images={resultImages}/>
             </Row>
         </Jumbotron>
     );
