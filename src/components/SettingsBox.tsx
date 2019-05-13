@@ -87,6 +87,7 @@ const SettingsBox: React.FC<ISettingsBox> = ({ settings, handleChange }) => {
                         Resolution multiplier for the tiles in resulting image.
                     </Form.Text>
                 </Form.Group>
+                <span style={{fontSize:15}}>(Applies To All The Images)</span>
             </div>
         </Col>
     );

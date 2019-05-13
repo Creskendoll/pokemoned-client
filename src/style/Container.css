@@ -1,4 +1,5 @@
 .component-container {
     background-color: #282c34;
     color: white;
+    padding-bottom: 0;
 }

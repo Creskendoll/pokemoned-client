@@ -12,33 +12,43 @@ interface IUploadBox {
 
 const UploadBox: React.FC<IUploadBox> = ({ images, updateImages }) => {
 
-    const handleDrop = (files: FileList | null, event: React.DragEvent<HTMLDivElement>) => {
+    const filePickerRef = React.createRef() as React.RefObject<HTMLInputElement>;
+
+    const handleDrop = (files: FileList | null) => {
+        var allowedTypes = /(image\/)[a-zA-Z]*/;
         if (files) {
             var droppedImages = Array<MyFile>();
-
-            [...Array(files.length).keys()].forEach((index: number) => {
-                const reader = new FileReader();
+            const filteredFiles = [...Array(files.length).keys()].reduce((res: Array<File>, index: number) => {
                 const file = files.item(index);
+                const fileType = file ? file.type : "";
+                if (allowedTypes.test(fileType) && file && file.size < 1000000) res.push(file);
+                return res;
+            }, Array<File>());
 
-                if (file)
-                    reader.readAsDataURL(file);
-
+            filteredFiles.forEach((file: File, count: number) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                console.log(file.size);
+                
                 reader.onloadend = () => {
 
                     const myFile: MyFile = {
-                        name: file ? file.name : "",
-                        size: file ? file.size : 0,
-                        type: file ? file.type : "",
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
                         src: reader.result ? reader.result : ""
                     };
 
                     droppedImages.push(myFile);
 
-                    if (index === files.length - 1)
-                        updateImages(droppedImages);
+                    if (count === filteredFiles.length - 1) updateImages(droppedImages);
                 }
             });
         }
+    }
+
+    const openFilePicker = () => {
+        if (filePickerRef.current && images.length === 0) filePickerRef.current.click();
     }
 
     const handleImageDelete = (e: any, index: number) => {
@@ -53,18 +63,15 @@ const UploadBox: React.FC<IUploadBox> = ({ images, updateImages }) => {
                 textAlign: "center",
                 height: "100%"
             }}>
-                {/* <Button variant="primary" style={{
-                    marginBottom: 15
-                }}>
-                    Upload Files
-                    <input type="file" />
-                </Button> */}
 
-                <div style={{ height: "100%" }}>
-                    <FileDrop onDrop={handleDrop} >
+                <input type="file" ref={filePickerRef} multiple style={{ display: "none" }}
+                    onChange={(event) => handleDrop(event.target.files)} />
+
+                <div style={{ height: "100%" }} onClick={openFilePicker}>
+                    <FileDrop onDrop={(files, event) => handleDrop(files)}>
                         <Container style={{
                             width: "100%",
-                            height : "100%",
+                            height: "100%",
                             overflowY: "auto"
                         }}>
                             {images.map((img, index) => {
@@ -73,15 +80,22 @@ const UploadBox: React.FC<IUploadBox> = ({ images, updateImages }) => {
                                 const imgSrc = img.src ? img.src : "";
                                 const imgSrcStr = typeof imgSrc === typeof ArrayBuffer ? enc.decode(imgSrc as ArrayBuffer) : imgSrc as string;
 
-                                return (<UploadImage key={index} onDelete={(e: any) => handleImageDelete(e, index)} imgSrc={imgSrcStr} fileName={img.name} />);
+                                return (<UploadImage key={index} onDelete={(e: any) => handleImageDelete(e, index)}
+                                    imgSrc={imgSrcStr} fileName={img.name} />);
                             })}
-                        {images.length === 0 && 
-                            <div style={{height:"100%"}}>
-                                <span style={{top:"50%", position: "relative"}}>
-                                    Drop your images here!
-                                </span>
-                            </div>
-                        }
+                            {images.length === 0 &&
+                                <div style={{ height: "100%" }}>
+                                    <div style={{ top: "50%", position: "relative" }}>
+                                        <span style={{fontSize:"large"}}>
+                                            Click Or Drop Your Images Here!
+                                        </span>
+                                        <br/>
+                                        <span style={{fontSize:"small"}}>
+                                            (Allowed Maximum Single File Size Is 1MB)
+                                        </span>
+                                    </div>
+                                </div>
+                            }
                         </Container>
                     </FileDrop>
                 </div>

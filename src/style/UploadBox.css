@@ -5,6 +5,7 @@
   width: 100%;
   border: #29B6F6 1px solid;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .file-drop>.file-drop-target {
@@ -55,7 +56,12 @@
 }
 
 .file-drop>.file-drop-target.file-drop-dragging-over-target {
-  /* turn stuff orange when we are dragging over the target */
+  /* turn stuff blue when we are dragging over the target */
+  color: #29B6F6;
+  box-shadow: 0 0 13px 3px #29B6F6;
+}
+.file-drop:hover {
+  /* turn stuff blue when we are dragging over the target */
   color: #29B6F6;
   box-shadow: 0 0 13px 3px #29B6F6;
 }

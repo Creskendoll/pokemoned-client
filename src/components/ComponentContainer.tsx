@@ -37,6 +37,7 @@ const ComponentContainer: React.FC = () => {
     const [settings, setSettings] = useState(initSettings);
     const [images, setImages] = useState(Array<MyFile>());
     const [resultImages, setResults] = useState(Array<string>());
+    const [loadingCount, setLoadingCount] = useState(0);
     // const [resultImages, setResults] = useState(debugResults);
 
     const updateUploadImages = (newImages: Array<MyFile>) => {
@@ -44,17 +45,27 @@ const ComponentContainer: React.FC = () => {
     }
 
     const handleConvert = () => {
-        const URL = "http://35.204.79.178:5000/pokemoned/post-image";
+        const URL = "https://kenansoylu.com/vm/pokemoned/post-image";
+        // const URL = "http://localhost:5000/pokemoned/post-image";
+        setLoadingCount(images.length);
+
         const service = new XMLHttpRequest();
         var formData = new FormData();
 
         images.forEach(image => {
             const decoded = (image.src as string).split(",")[1];
-            
+            const convertOptions = {
+                "X" : settings.divideX.toString(),
+                "Y" : settings.divideY.toString(),
+                "Q" : settings.quality.toString(),
+                "GetExisting" : "False"
+            };
+            formData.append("options", JSON.stringify(convertOptions));
             formData.append("image", b64toBlob(decoded, image.type), image.name);
         });
         
         service.addEventListener("load", function() {
+            setLoadingCount(0);
             const responseObj = JSON.parse(this.responseText);
             setResults(responseObj["images"] || []);
         });
@@ -86,14 +97,13 @@ const ComponentContainer: React.FC = () => {
                         height: 60,
                         marginTop: 15,
                         display: "block"
-
-                    }}>
+                    }} disabled={images.length === 0}>
                         Convert!
                     </Button>
                 </Col>
             </Row>
             <Row>
-                <ResultBox images={resultImages}/>
+                <ResultBox images={resultImages} loadingGifs={loadingCount}/>
             </Row>
         </Jumbotron>
     );

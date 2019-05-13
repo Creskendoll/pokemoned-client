@@ -19,7 +19,8 @@ const UploadImage: React.FC<IUploadImageProps> = ({ imgSrc, fileName, onDelete }
             marginRight: 0,
             marginLeft: 0,
             borderRadius: 3,
-            height: "33%"
+            height: "33%",
+            backgroundColor: "darkslategray"
         }}>
             <Col md={5} lg={5} style={{maxHeight : "100%"}}>
                 <img src={imgSrc} alt="Uploaded" 
