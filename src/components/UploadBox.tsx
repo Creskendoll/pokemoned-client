@@ -28,7 +28,6 @@ const UploadBox: React.FC<IUploadBox> = ({ images, updateImages }) => {
             filteredFiles.forEach((file: File, count: number) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
-                console.log(file.size);
                 
                 reader.onloadend = () => {
 
@@ -61,11 +60,11 @@ const UploadBox: React.FC<IUploadBox> = ({ images, updateImages }) => {
                 border: '1px solid white',
                 color: 'white', padding: 10,
                 textAlign: "center",
-                height: "100%"
+                height: "408px"
             }}>
 
                 <input type="file" ref={filePickerRef} multiple style={{ display: "none" }}
-                    onChange={(event) => handleDrop(event.target.files)} />
+                    onChange={(event) => handleDrop(event.target.files)} accept="image/*"/>
 
                 <div style={{ height: "100%" }} onClick={openFilePicker}>
                     <FileDrop onDrop={(files, event) => handleDrop(files)}>

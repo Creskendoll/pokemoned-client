@@ -36,8 +36,8 @@ const ComponentContainer: React.FC = () => {
 
     const [settings, setSettings] = useState(initSettings);
     const [images, setImages] = useState(Array<MyFile>());
-    const [resultImages, setResults] = useState(Array<string>());
     const [loadingCount, setLoadingCount] = useState(0);
+    const [resultImages, setResults] = useState(Array<string>());
     // const [resultImages, setResults] = useState(debugResults);
 
     const updateUploadImages = (newImages: Array<MyFile>) => {
@@ -67,7 +67,8 @@ const ComponentContainer: React.FC = () => {
         service.addEventListener("load", function() {
             setLoadingCount(0);
             const responseObj = JSON.parse(this.responseText);
-            setResults(responseObj["images"] || []);
+            const newResults = Array<string>().concat(resultImages, responseObj["images"] || []);
+            setResults(newResults);
         });
         service.addEventListener("error", function() {
             alert("Error Sending Files!");
