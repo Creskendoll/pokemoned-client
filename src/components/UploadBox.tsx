@@ -21,7 +21,7 @@ const UploadBox: React.FC<IUploadBox> = ({ images, updateImages }) => {
             const filteredFiles = [...Array(files.length).keys()].reduce((res: Array<File>, index: number) => {
                 const file = files.item(index);
                 const fileType = file ? file.type : "";
-                if (allowedTypes.test(fileType) && file && file.size < 1000000) res.push(file);
+                if (allowedTypes.test(fileType) && file && file.size < 5000000) res.push(file);
                 return res;
             }, Array<File>());
 

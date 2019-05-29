@@ -45,7 +45,7 @@ const ComponentContainer: React.FC = () => {
     }
 
     const handleConvert = () => {
-        const URL = "https://kenansoylu.com/vm/pokemoned/post-image";
+        const URL = "https://kenansoylu.com/pokemoned/post-image";
         // const URL = "http://localhost:5000/pokemoned/post-image";
         setLoadingCount(images.length);
 
@@ -58,7 +58,8 @@ const ComponentContainer: React.FC = () => {
                 "X" : settings.divideX.toString(),
                 "Y" : settings.divideY.toString(),
                 "Q" : settings.quality.toString(),
-                "GetExisting" : "False"
+                "GetExisting" : "False",
+                "SaveFile" : "True"
             };
             formData.append("options", JSON.stringify(convertOptions));
             formData.append("image", b64toBlob(decoded, image.type), image.name);
@@ -71,7 +72,7 @@ const ComponentContainer: React.FC = () => {
             setResults(newResults);
         });
         service.addEventListener("error", function() {
-            alert("Error Sending Files!");
+            alert("Error Converting Images!");
             console.log(this.responseText);
         });
         service.open("post", URL, true);
