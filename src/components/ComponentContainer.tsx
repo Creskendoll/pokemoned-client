@@ -45,8 +45,7 @@ const ComponentContainer: React.FC = () => {
     }
 
     const handleConvert = () => {
-        const URL = "https://kenansoylu.com/pokemoned/post-image";
-        // const URL = "http://localhost:5000/pokemoned/post-image";
+        const URL = "/pokemoned/post-image";
         setLoadingCount(images.length);
 
         const service = new XMLHttpRequest();

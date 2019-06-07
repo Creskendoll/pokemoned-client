@@ -8,8 +8,7 @@ interface IResultBox {
 }
 
 const ResultBox: React.FC<IResultBox> = ({ images, loadingGifs }) => {
-    const BASE_URL = "https://kenansoylu.com/pokemoned?image="
-    // const BASE_URL = "http://localhost:5000/pokemoned?image="
+    const BASE_URL = "/pokemoned?image="
 
     const handleImageClick = (url: string) => {
         const win = window.open(url, '_blank');

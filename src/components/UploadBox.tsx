@@ -90,7 +90,7 @@ const UploadBox: React.FC<IUploadBox> = ({ images, updateImages }) => {
                                         </span>
                                         <br/>
                                         <span style={{fontSize:"small"}}>
-                                            (Allowed Maximum Single File Size Is 1MB)
+                                            (Allowed Maximum Single File Size Is 5MB)
                                         </span>
                                     </div>
                                 </div>
