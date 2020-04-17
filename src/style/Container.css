@@ -1,5 +1,7 @@
 .component-container {
-    background-color: #282c34;
-    color: white;
-    padding-bottom: 0;
+  background-color: #282c34;
+  color: white;
+  margin-bottom: 0px;
+  height: 100vh;
+  text-align: center;
 }
